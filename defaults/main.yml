@@ -8,15 +8,17 @@ prosody_virtual_hosts:
 prosody_admins: ['admin']
 prosody_proxy: "proxy.{{ prosody_vhost }}"
 prosody_contacts:
-  - {name: abuse, address: "xmpp:admin@{{ prosody_vhost }}"}
-  - {name: admin, address: "xmpp:admin@{{ prosody_vhost }}"}
+  - name: abuse
+    address: "xmpp:admin@{{ prosody_vhost }}"
+  - name: admin
+    address: "xmpp:admin@{{ prosody_vhost }}"
 
-# supported levels are: "debug", "info", "warn", "error".
+# log levels are: "debug", "info", "warn", "error".
 prosody_log_level: info
 # use "cyrus" to activate ldap auth
 prosody_authentication: internal_hashed
 prosody_dhparam_length: 2048
-prosody_welcome_msg: "Hello $username, welcome to the $host IM server!"
+prosody_welcome_msg: "Hello $username, welcome to the $host jabber server!"
 
 # https://prosody.im/doc/setting_up_bosh#cross-domain_issues
 prosody_cors: false
@@ -49,7 +51,8 @@ prosody_external_modules:
   - c2s_conn_throttle
   - cloud_notify
   - filter_chatstates
-  - http_upload
+  # - http_upload
+  - http_file_share
   - lastlog
   - limit_auth
   - list_inactive
@@ -114,9 +117,4 @@ prosody_ldap_packages:
 prosody_ldap_filter: (sAMAccountName=%u)
 
 prosody_stun_port: 5555
-
-# monitoring
-prosody_monitoring: false
-prosody_monitoring_packages:
-  - munin-node
-  - git
+prosody_libevent: true
