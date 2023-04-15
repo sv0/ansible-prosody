@@ -5,8 +5,8 @@ Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
 ## Requirements
 
-  - Debian 10
-  - Ubuntu 20.04
+  - Debian 11
+  - Ubuntu 18.04
 
 ## Default Variables
 
@@ -44,7 +44,6 @@ Download latest release with `ansible-galaxy`
 
 
 ## Tests
-
 
 Run local tests with
 

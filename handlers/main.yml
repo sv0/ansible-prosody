@@ -1,24 +1,24 @@
 ---
-- name: reload systemd
+- name: Reload systemd
   systemd:
     daemon_reload: true
 
-- name: reload prosody config
+- name: Reload prosody config
   systemd:
     name: prosody
     state: reloaded
 
-- name: restart prosody
+- name: Restart prosody
   systemd:
     name: prosody
     state: restarted
 
-- name: stop prosody
+- name: Stop prosody
   systemd:
     name: prosody
     state: stopped
 
-- name: start prosody
+- name: Start prosody
   systemd:
     name: prosody
     state: started

@@ -158,8 +158,10 @@ s2s_secure_auth = false
 -- Required for init scripts and prosodyctl
 pidfile = "/var/run/prosody/prosody.pid"
 
+-- TODO delete following 3 lines
+-- The 'daemonize' option has been deprecated
 -- let systemd daemonize the server
-daemonize = false
+-- daemonize = false
 
 -- Select the authentication backend to use. The 'internal' providers
 -- use Prosody's configured data storage to store the authentication data.
@@ -271,11 +273,6 @@ contact_info = {
     {{ contact.name }} = { "{{ contact.address }}" };
 {% endfor %}
 };
-
-{% if prosody_monitoring %}
------- Monitoring ------
-munin_ports = { 4950 }
-{% endif %}
 
 -- HTTPS currently only supports a single certificate, specify it here:
 --https_certificate = "/etc/prosody/certs/localhost.crt"
