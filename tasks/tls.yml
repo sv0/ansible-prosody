@@ -1,5 +1,5 @@
 ---
-- name: "Push TLS cert of {{ item.name }} to /etc/prosody/certs/"
+- name: "Push TLS cert to /etc/prosody/certs/{{ item.name }}"
   ansible.builtin.copy:
     content: "{{ item.cert }}"
     dest: "/etc/prosody/certs/{{ item.name }}.crt"
@@ -11,7 +11,7 @@
     - cert
   notify: Reload prosody config
 
-- name: "Push TLS key of {{ item.name }} to /etc/prosody/certs/"
+- name: "Push TLS key of to /etc/prosody/certs/{{ item.name }}"
   ansible.builtin.copy:
     content: "{{ item.key }}"
     dest: "/etc/prosody/certs/{{ item.name }}.key"
