@@ -1,0 +1,24 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    - somevar: 990
+
+  pre_tasks:
+    - name: Debug 1
+      debug:
+        var: ansible_distribution_release
+
+    - name: apt-get update
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 86400
+
+    - name: Install net-tools (required by testinfa)
+      ansible.builtin.apt:
+        name: net-tools
+
+  tasks:
+    - name: "Include sv0.prosody"
+      ansible.builtin.include_role:
+        name: "sv0.prosody"
