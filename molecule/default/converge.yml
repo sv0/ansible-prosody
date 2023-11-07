@@ -2,11 +2,10 @@
 - name: Converge
   hosts: all
   vars:
-    - somevar: 990
-
+    - prosody_accounts: []
   pre_tasks:
-    - name: Debug 1
-      debug:
+    - name: Debug
+      ansible.builtin.debug:
         var: ansible_distribution_release
 
     - name: apt-get update
