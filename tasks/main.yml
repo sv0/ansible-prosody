@@ -1,16 +1,16 @@
 ---
-- name: Debug
-  debug:
-    var: ansible_facts  # e.g. ["ansible_service_mgr"] == "systemd"
-# - ansible_distribution == 'Debian'
-# - ansible_distribution_version | int >= 11
+- name: Debug ansible_facts
+  ansible.builtin.debug:
+    var: ansible_facts
+    # e.g. ["ansible_service_mgr"] == "systemd"
 
 - name: Add prosody GPG key and repository
   block:
     - name: Add gpg key
-      get_url:
+      ansible.builtin.get_url:
         url: https://prosody.im/files/prosody-debian-packages.key
         dest: /etc/apt/trusted.gpg.d/prosody.gpg
+        mode: 0644
 
     - name: Add specified repository into sources list using specified filename
       ansible.builtin.apt_repository:
@@ -20,9 +20,8 @@
         filename: prosody
 
 - name: Install prosody packages
-  package:
+  ansible.builtin.package:
     name: "{{ prosody_packages }}"
-    # cache_valid_time: 3600
   notify:
     - Restart prosody
 
@@ -50,13 +49,18 @@
     - Reload systemd
     - Reload prosody config
 
-- include_tasks: tls.yml
+- name: Include tasks from tls.yml
+  ansible.builtin.include_tasks:
+    file: tls.yml
   with_items: "{{ prosody_virtual_hosts }}"
   tags:
+    - certificate
     - cert
 
 - name: Create parameters for Diffie–Hellman
-  ansible.builtin.command: "openssl dhparam -out /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem {{ prosody_dhparam_length }}"
+  ansible.builtin.command:
+    "openssl dhparam -out /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem \
+       {{ prosody_dhparam_length }}"
   args:
     creates: /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem
   notify: Restart prosody
@@ -93,8 +97,8 @@
     - cert
   notify: Reload prosody config
 
-- name: flush handlers
-  meta: flush_handlers
+- name: Flush handlers
+  ansible.legacy.meta: flush_handlers
 
 - name: Enable prosody systemd service
   ansible.builtin.systemd:
@@ -103,7 +107,7 @@
   when:
     - ansible_service_mgr == "systemd"
 
-- name: debug prosody_accounts
+- name: Debug prosody_accounts
   ansible.builtin.debug:
     var: prosody_accounts
   tags:
@@ -116,6 +120,7 @@
     | prosodyctl adduser {{ item.username }}
   with_items: "{{ prosody_accounts }}"
   failed_when: false
+  no_log: true
   tags:
     - user
   notify: Reload prosody config
