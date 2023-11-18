@@ -43,14 +43,6 @@ jobs:
       - lint
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - distro: debian10
-          - distro: debian11
-          - distro: debian12
-          # - distro: ubuntu1604
-          #   ansible-version: '>=2.10, <2.11'
-          # - distro: ubuntu2004
 
     steps:
       - name: Check out the codebase
@@ -64,8 +56,6 @@ jobs:
           python-version: '3.x'
 
       - name: Install test dependencies
-        # run: pip install 'ansible${{ matrix.ansible-version }}' \
-        # molecule[docker] docker
         run: |
           pip install -r test-requirements.txt
           # test -f requirements.yml && \
@@ -78,5 +68,5 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           ANSIBLE_VERBOSITY: '2'
           MOLECULE_DEBUG: '1'
-          MOLECULE_DISTRO: "${{ matrix.distro }}"
+          # MOLECULE_DISTRO: "${{ matrix.distro }}"
           PY_COLORS: '1'
