@@ -1,0 +1,33 @@
+---
+driver:
+  name: docker
+
+
+platforms:
+  - name: debian-11
+    image: "slavik0/debian-11-systemd"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
+    cgroupns_mode: host
+    pre_build_image: true
+
+  - name: debian-12
+    image: "slavik0/debian-12-systemd"
+    command: ${MOLECULE_DOCKER_COMMAND:-""}
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
+    privileged: true
+    cgroupns_mode: host
+    pre_build_image: true
+
+
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_REMOTE_TMP: /tmp
+
+
+verifier:
+  name: testinfra
