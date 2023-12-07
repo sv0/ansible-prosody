@@ -1,24 +1,30 @@
 ---
+- name: Set certificate fullchain path
+  ansible.legacy.set_fact:
+    certificate_fullchain: "{{ prosody_certificate_dir }}/{{ item.name }}/fullchain.pem"
+
+- name: "Debug certificate_fullchain"
+  ansible.builtin.debug:
+    var: certificate_fullchain
+
+- name: Set certificate key path
+  ansible.legacy.set_fact:
+    certificate_privkey: "{{ prosody_certificate_dir }}/{{ item.name }}/privkey.pem"
+
 - name: "Push TLS cert to /etc/prosody/certs/{{ item.name }}"
   ansible.builtin.copy:
-    content: "{{ item.cert }}"
+    src: "{{ certificate_fullchain }}"
     dest: "/etc/prosody/certs/{{ item.name }}.crt"
     owner: root
     group: prosody
     mode: 0640
-  when: item.cert is defined
-  tags:
-    - cert
   notify: Reload prosody config
 
 - name: "Push TLS key of to /etc/prosody/certs/{{ item.name }}"
   ansible.builtin.copy:
-    content: "{{ item.key }}"
+    src: "{{ certificate_privkey }}"
     dest: "/etc/prosody/certs/{{ item.name }}.key"
     owner: root
     group: prosody
     mode: 0640
-  when: item.key is defined
-  tags:
-    - cert
   notify: Reload prosody config
