@@ -1,8 +1,8 @@
 ---
-- name: Debug ansible_facts
-  ansible.builtin.debug:
-    var: ansible_facts
-    # e.g. ["ansible_service_mgr"] == "systemd"
+# - name: Debug ansible_facts
+#   ansible.builtin.debug:
+#     var: ansible_facts
+#     # e.g. ["ansible_service_mgr"] == "systemd"
 
 - name: Add prosody GPG key and repository
   block:
@@ -52,10 +52,14 @@
 - name: Include tasks from tls.yml
   ansible.builtin.include_tasks:
     file: tls.yml
+    apply:
+      tags:
+        - cert
+        - tls
   with_items: "{{ prosody_virtual_hosts }}"
   tags:
-    - certificate
     - cert
+    - tls
 
 - name: Create parameters for Diffie–Hellman
   ansible.builtin.command:
@@ -64,38 +68,6 @@
   args:
     creates: /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem
   notify: Restart prosody
-
-- name: Copy proxy TLS cert to /etc/prosody/certs/
-  ansible.builtin.copy:
-    content: "{{ prosody_proxy_ssl_cert }}"
-    dest: /etc/prosody/certs/proxy.pem
-    owner: root
-    group: prosody
-    mode: 0640
-  when: prosody_proxy_ssl_cert is defined
-  tags:
-    - cert
-  notify: Reload prosody config
-
-- name: Change ownership of generic key file if no custom is used
-  ansible.builtin.file:
-    path: /etc/prosody/certs/localhost.key
-    owner: root
-    group: prosody
-    mode: 0640
-  when: prosody_proxy_ssl_cert is undefined
-
-- name: Copy proxy TLS key to /etc/prosody/certs/
-  ansible.builtin.copy:
-    content: "{{ prosody_proxy_ssl_key }}"
-    dest: /etc/prosody/certs/proxy.key
-    owner: root
-    group: prosody
-    mode: 0640
-  when: prosody_proxy_ssl_key is defined
-  tags:
-    - cert
-  notify: Reload prosody config
 
 - name: Flush handlers
   ansible.legacy.meta: flush_handlers
@@ -107,7 +79,7 @@
   when:
     - ansible_service_mgr == "systemd"
 
-- name: Debug prosody_accounts
+- name: Debug prosody_accounts variable
   ansible.builtin.debug:
     var: prosody_accounts
   tags:
@@ -120,7 +92,9 @@
     | prosodyctl adduser {{ item.username }}
   with_items: "{{ prosody_accounts }}"
   failed_when: false
+  changed_when: false
   no_log: true
   tags:
     - user
+    - account
   notify: Reload prosody config
