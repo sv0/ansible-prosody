@@ -5,7 +5,8 @@ Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
 ## Requirements
 
-  - Debian 11
+  - Debian 11 (Bullseye)
+  - Debian 12 (Bookworm)
   - Ubuntu 18.04
 
 ## Default Variables
@@ -49,7 +50,7 @@ Run local tests with
 
     molecule test
 
-Requires Molecule, Vagrant and `python-vagrant` to be installed.
+Requires Molecule and Docker to be installed on devel host.
 
 ## License
 
