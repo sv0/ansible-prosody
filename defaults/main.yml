@@ -43,7 +43,7 @@ prosody_modules:
   - private  # Private XML storage (for room bookmarks, etc.)
   - roster  # Allow users to keep and manage friend lists
   - server_contact_info  # Publish contact information for this service
-  - vcard_legacy  # Allow users to set vCards
+  # - vcard_legacy  # Allow users to set vCards
   - websocket  # XMPP over WebSockets
 
 prosody_external_modules:
@@ -52,19 +52,20 @@ prosody_external_modules:
   - cloud_notify
   # - filter_chatstates
   # - http_upload
-  - http_file_share
+  # - http_file_share
   - lastlog
   - limit_auth
   - list_inactive
   - log_sasl_mech
   - reload_modules
-  # modulemanager: Unable to load module 'register_redirect':
-  # /usr/lib/prosody/modules/share/lua/5.1/mod_register_redirect/mod_register_redirect.lua: No such file or directory
-  # - register_redirect
-  # - register_web
   - s2s_auth_compat
   - s2s_blacklist
   - smacks
+  # modulemanager: Unable to load module 'register_redirect':
+  # /usr/lib/prosody/modules/share/lua/5.1/\
+  # mod_register_redirect/mod_register_redirect.lua: No such file or directory
+  # - register_redirect
+  # - register_web
 
 prosody_external_modules_dir: /usr/local/share/prosody-modules
 
@@ -108,6 +109,8 @@ prosody_packages:
   - lua-sec
   - lua-bitop
   - lua-event
+  # deployment and management system for Lua modules
+  - luarocks
 
 prosody_stun_port: 5555
 prosody_libevent: true

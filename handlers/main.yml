@@ -1,24 +1,24 @@
 ---
 - name: Reload systemd
-  systemd:
+  ansible.legacy.systemd:
     daemon_reload: true
 
 - name: Reload prosody config
-  systemd:
+  ansible.legacy.systemd:
     name: prosody
     state: reloaded
 
 - name: Restart prosody
-  systemd:
+  ansible.legacy.systemd:
     name: prosody
     state: restarted
 
 - name: Stop prosody
-  systemd:
+  ansible.legacy.systemd:
     name: prosody
     state: stopped
 
 - name: Start prosody
-  systemd:
+  ansible.legacy.systemd:
     name: prosody
     state: started

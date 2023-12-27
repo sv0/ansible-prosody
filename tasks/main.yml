@@ -15,7 +15,8 @@
     - name: Add specified repository into sources list using specified filename
       ansible.builtin.apt_repository:
         repo:
-          "deb https://packages.prosody.im/debian {{ ansible_distribution_release }} main"
+          "deb https://packages.prosody.im/debian \
+           {{ ansible_distribution_release }} main"
         state: present
         filename: prosody
 
@@ -63,7 +64,8 @@
 
 - name: Create parameters for Diffie–Hellman
   ansible.builtin.command:
-    "openssl dhparam -out /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem \
+    "openssl dhparam \
+      -out /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem \
        {{ prosody_dhparam_length }}"
   args:
     creates: /etc/prosody/certs/dh-{{ prosody_dhparam_length }}.pem
