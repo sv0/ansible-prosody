@@ -60,3 +60,8 @@ GPL
 ## Author Information
 
 [Slavik Svyrydiuk](https://slavik.svyrydiuk.eu/about.html)
+
+
+## Usefull links
+
+- [Modern XMPP Server](https://docs.trueelena.org/self_hosting/modern_xmpp_server/index.html)
