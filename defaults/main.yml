@@ -111,6 +111,7 @@ prosody_packages:
   - lua-event
   # deployment and management system for Lua modules
   - luarocks
+  - coturn
 
 prosody_stun_port: 5555
 prosody_libevent: true
