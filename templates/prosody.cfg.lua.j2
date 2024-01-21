@@ -1,11 +1,15 @@
 -- Tip: You can check that the syntax of this file is correct
 -- when you have finished by running this command:
---     prosodyctl check config
+-- prosodyctl check config
 
 ---------- Server-wide settings ----------
 -- (see https://prosody.im/doc/creating_accounts for info)
 -- Example: admins = { "user1@example.com", "user2@example.net" }
-admins = { }
+admins = {
+{% for admin in prosody_admins %}
+    "{{ admin }}@{{ prosody_vhost }}",
+{% endfor %}
+}
 
 -- This option allows you to specify additional locations where Prosody
 -- will search first for modules. For additional modules you can install, see
@@ -176,6 +180,7 @@ log = {
 	-- "*console"; -- Log to the console, useful for debugging when running in the foreground
 }
 
+allow_registration = false
 
 -- Uncomment to enable statistics
 -- For more info see https://prosody.im/doc/statistics
@@ -194,9 +199,34 @@ VirtualHost "{{ vhost.name }}"
 {% endif %}
 {% if vhost.admins is defined %}
     admins = {
-{% for admin in vhost.admins %}
+{%      for admin in vhost.admins %}
         "{{ admin }}",
-{% endfor %}
+{%      endfor %}
     }
 {% endif %}
+---Set up a MUC (multi-user chat) room server:
+Component "conference.{{ vhost.name }}" "muc"
+    modules_enabled = {
+{% for module in prosody_muc_modules %}
+        "{{ module }}";
 {% endfor %}
+    }
+    restrict_room_creation = "local"
+    -- Disable logging by default (can be enabled in room config)
+    muc_log_by_default = {{ prosody_muc_log_by_default }}
+    muc_log_all_rooms = false -- set to true to force logging of all rooms
+    max_history_messages = {{ prosody_max_history_messages }}
+    disco_items = {
+        { "upload.{{ vhost.name }}", "file sharing service" },
+    }
+
+Component "upload.{{ vhost.name }}" "http_file_share"
+{% endfor %}  -- end of virtual hosts for loop
+
+external_services = {
+        ["stun.svyrydiuk.eu"] = {
+        port="3478";
+        transport="udp";
+        type="stun";
+    };
+};
