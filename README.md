@@ -1,6 +1,6 @@
 Ansible Prosody
 ===============
-[![CI](https://github.com/sv0/ansible-prosody/workflows/CI/badge.svg?event=push)](https://github.com/sv0/ansible-prosody/actions?query=workflow%3ACI)
+[![CI](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml)
 
 Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
