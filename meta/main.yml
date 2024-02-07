@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: prosody
   namespace: sv0
-  author: Slavik Svyrydiuk
+  author: slavik@svyrydiuk.eu
   description: Install and configure Prosody XMPP server
   company: svyrydiuk.eu
   license: GPLv3
@@ -15,3 +15,5 @@ galaxy_info:
       versions:
         - bullseye
         - bookworm
+
+dependencies: []
