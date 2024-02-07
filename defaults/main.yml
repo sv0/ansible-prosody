@@ -2,8 +2,6 @@
 prosody_vhost: "{{ inventory_hostname }}"
 prosody_c2s_ports: 5222
 prosody_s2s_ports: 5269
-prosody_virtual_hosts:
-  - name: "{{ prosody_vhost }}"
 
 prosody_admins:
   - admin
