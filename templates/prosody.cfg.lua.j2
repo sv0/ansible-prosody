@@ -165,10 +165,10 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 -- Find more information at https://prosody.im/doc/turn
 
 -- Specify the address of the TURN service (you may use the same domain as XMPP)
---turn_external_host = "turn.example.com"
+-- turn_external_host = "turn.example.com"
 
 -- This secret must be set to the same value in both Prosody and the TURN server
---turn_external_secret = "your-secret-turn-access-token"
+-- turn_external_secret = "your-secret-turn-access-token"
 
 
 -- Logging configuration
@@ -189,23 +189,14 @@ allow_registration = false
 -- Location of directory to find certificates in (relative to main config file):
 certificates = "certs"
 
-{% for vhost in prosody_virtual_hosts %}
-VirtualHost "{{ vhost.name }}"
-{% if vhost.cert is defined and vhost.key is defined %}
+VirtualHost "{{ prosody_vhost }}"
     ssl = {
-        certificate = "certs/{{ vhost.name }}.crt";
-        key = "certs/{{ vhost.name }}.key";
+        certificate = "certs/{{ prosody_vhost }}.crt";
+        key = "certs/{{ prosody_vhost }}.key";
     }
-{% endif %}
-{% if vhost.admins is defined %}
-    admins = {
-{%      for admin in vhost.admins %}
-        "{{ admin }}",
-{%      endfor %}
-    }
-{% endif %}
+
 ---Set up a MUC (multi-user chat) room server:
-Component "conference.{{ vhost.name }}" "muc"
+Component "conference.{{ prosody_vhost }}" "muc"
     modules_enabled = {
 {% for module in prosody_muc_modules %}
         "{{ module }}";
@@ -217,14 +208,13 @@ Component "conference.{{ vhost.name }}" "muc"
     muc_log_all_rooms = false -- set to true to force logging of all rooms
     max_history_messages = {{ prosody_max_history_messages }}
     disco_items = {
-        { "upload.{{ vhost.name }}", "file sharing service" },
+        { "upload.{{ prosody_vhost }}", "file sharing service" },
     }
 
-Component "upload.{{ vhost.name }}" "http_file_share"
-{% endfor %}  -- end of virtual hosts for loop
+Component "upload.{{ prosody_vhost }}" "http_file_share"
 
 external_services = {
-        ["stun.svyrydiuk.eu"] = {
+        ["stun.{{ prosody_vhost }}"] = {
         port="3478";
         transport="udp";
         type="stun";
