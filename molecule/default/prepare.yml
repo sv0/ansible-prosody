@@ -1,0 +1,36 @@
+---
+- name: Prepare
+  hosts: all
+  vars:
+    prosody_certificate_dir: "{{ inventory_dir }}/.tmp"
+
+  tasks:
+    - name: Debug 1
+      debug:
+        var: ansible_distribution_release
+
+    - name: apt-get update
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install net-tools (required by testinfa)
+      ansible.builtin.apt:
+        name: net-tools
+
+    - name: Create temporary directory
+      ansible.builtin.file:
+        path: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}"
+        state: directory
+      delegate_to: localhost
+
+    - name: Generate a Self Signed OpenSSL certificate
+      shell: |
+        openssl genrsa \
+          -out "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/privkey.pem" 4096
+        openssl req -new -x509 \
+          -key "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/privkey.pem" \
+          -out "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/fullchain.pem" \
+          -days 365 \
+          -subj "/C=US/ST=Example/L=Example/O=Dis/CN={{ inventory_hostname }}"
+      delegate_to: localhost

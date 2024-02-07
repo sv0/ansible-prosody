@@ -27,6 +27,11 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_REMOTE_TMP: /tmp
+  inventory:
+    group_vars:
+      all:
+        prosody_vhost: "{{ inventory_hostname }}"
+
 
 
 verifier:
