@@ -33,6 +33,5 @@ provisioner:
         prosody_vhost: "{{ inventory_hostname }}"
 
 
-
 verifier:
   name: testinfra
