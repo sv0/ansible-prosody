@@ -25,26 +25,64 @@
         mode: 0755
       delegate_to: localhost
 
-    - name: Generate private key
-      ansible.builtin.command:
-        argv:
-          - /bin/openssl genrsa
-          - -out
-          - "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/privkey.pem"
-          - 4096
-      changed_when: false
+    - name: Create test private key
+      ansible.builtin.copy:
+        dest: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/privkey.pem"
+        content:
+          -----BEGIN PRIVATE KEY-----
+          MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDrbXkGoqSTMtDk
+          Eh23jGOQxk1itkF5C5Q5fW51IOPxQ3udepwKnj/TOgkBlF6hm4BnTzMb8SZTBp05
+          zvdZENFooqGCge2KCksVsJlWr7ghsM8sq3sJOsHM97/fTr8Hc4quxFvkOK1VdMQY
+          Ypk1nxpIXh0lOGdhugIOYpuNFrodSjOduO8eQGJBK1iwZwURp7NhohpTZ4aQV9rl
+          sH14U5DRw67qmNpWoj6E4rCgOILDdSH3BYM/iWRBzykwj86GulB37EklV40gH9/D
+          Fp2ViEcSPurIUkkyElzQlufWzfVr8hugA3ouhZmq/zm4vhStD3Rgo4tRkKQ9mrJY
+          L/fr6xppAgMBAAECggEAA5mxvWB84FRpXeeKBU3UEvl5Yv5TC4EaE/P/XbKyUbT8
+          vbiLjN0FMFuFmjzU4qdQZCQRrcZ3FdN20ZTA8x9++FjuW+LVSWRlaBBClBENYZSE
+          4pO/xrEbmCEc0dMwODKz5v7RQfD8857cxduyKKAFhKBN1U0ixZuU3vfylYqIr5x0
+          ocZOD0JWXZU1wjnvfErzRbt6KmhCHR9jrKkDQV9wryVrzdK00rkWlXwv8rglDt1T
+          91hBz72J80uS009b3+YQGpxEeWrwp1C5jHZBZB3IVB10H8QT5jL5CNmvCZ/vR99z
+          Of0GUUkdU7kt1oHeKoBf112vnfKX5UboZt804RHp4QKBgQD3tNaVjs/G+rSW0pRF
+          dkNtIWmz1LpsRbUgdPV/s3pLhNEs6mCwkGszvGT1ShwmWEm8DFmskk6TiX0wupe8
+          FjFJRUEsZuxoPmOe1tl8e0XKMlGwNPIX1tt51jrD2wX0X+1CmRQbTQHFQ6Evg1Wh
+          EJtVekHzDznnZQ5vkF3lj7lt0QKBgQDzT2PD3V7zSiX0pgbtx9oi9J1RxWJzBLZR
+          9XCex6wcF1hOuciBRoZmp1gjMMuDDKCeIUZ1bJTeLBXqL87GEMRJPrTL+2xW0OiK
+          cAZAGwumN0YenUkpjxkylo+Cedc53UfvdNTbIULLkbPY3St9CAqK4ijlC04Hhu0F
+          eIwVvNyRGQKBgEvs6jk9ZQKgpen08e24qkIxE61Db0DwvOwN7ZIO+VVciKEz1h9I
+          pRNek7N729UFCtTRFEuJLPycD/t3tjq4srK6v5dUlPH+7ZoqUM+PGX04n0FbeTlF
+          alCWEb0mzVRycs8PDNKxb/F/IVDm+MA9zt8MclqGOEFtAFfB8IYE39mBAoGBANzC
+          kKubRNaL1Wpn5euDJJoIxmD2LgBcKyyr/HYkhzWpvNcZXCJnofSsK50qXczW/Tjc
+          yjgqv9vhtjSZEgzGE8K9YX+e7UrMG+HYCOPLZkN27WlDnqlVjDBJSYbCFBUNgIJ0
+          x9jXEerwlXTUH+w/Com+8An5ut+7fX00Ri5HAP2pAoGADNe8wHFvJZ4qaL7Jx136
+          HyVglmqZR8EBkVnh6n25ozimgPWurngyVFb8ogwurItVSXuj56Eh6gy1hENPS/PB
+          G82A3sm87lmA/qBCHuCHFs/dKLa5JvRvvjIPEHpTd4Agsfnudq3KbqlP7PhpfSiM
+          PkLHVylIzTsIWRUJiRGpQiM=
+          -----END PRIVATE KEY-----
       delegate_to: localhost
 
-    - name: Generate a Self Signed OpenSSL certificate
-      ansible.builtin.command:
-        argv:
-          - /bin/openssl req -new -x509
-          - -key
-          - "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/privkey.pem"
-          - -out
-          - "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/fullchain.pem"
-          - -days 365
-          - -subj
-          - "/C=US/ST=Example/L=Example/O=Dis/CN={{ inventory_hostname }}"
-      changed_when: false
+    - name: Create Self Signed test certificate
+      ansible.builtin.copy:
+        dest: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/fullchain.pem"
+        content:
+          -----BEGIN CERTIFICATE-----
+          MIIDlzCCAn+gAwIBAgIUGu8z1kppDW8TBVdqi7S2qVI3DJ8wDQYJKoZIhvcNAQEL
+          BQAwWzELMAkGA1UEBhMCQ1oxEDAOBgNVBAgMB0V4YW1wbGUxEDAOBgNVBAcMB0V4
+          YW1wbGUxDDAKBgNVBAoMA0RpczEaMBgGA1UEAwwReG1wcC5zdnlyeWRpdWsuZXUw
+          HhcNMjQwMjEzMTIyOTAyWhcNMzQwMjEwMTIyOTAyWjBbMQswCQYDVQQGEwJDWjEQ
+          MA4GA1UECAwHRXhhbXBsZTEQMA4GA1UEBwwHRXhhbXBsZTEMMAoGA1UECgwDRGlz
+          MRowGAYDVQQDDBF4bXBwLnN2eXJ5ZGl1ay5ldTCCASIwDQYJKoZIhvcNAQEBBQAD
+          ggEPADCCAQoCggEBAOtteQaipJMy0OQSHbeMY5DGTWK2QXkLlDl9bnUg4/FDe516
+          nAqeP9M6CQGUXqGbgGdPMxvxJlMGnTnO91kQ0WiioYKB7YoKSxWwmVavuCGwzyyr
+          ewk6wcz3v99Ovwdziq7EW+Q4rVV0xBhimTWfGkheHSU4Z2G6Ag5im40Wuh1KM524
+          7x5AYkErWLBnBRGns2GiGlNnhpBX2uWwfXhTkNHDruqY2laiPoTisKA4gsN1IfcF
+          gz+JZEHPKTCPzoa6UHfsSSVXjSAf38MWnZWIRxI+6shSSTISXNCW59bN9WvyG6AD
+          ei6Fmar/Obi+FK0PdGCji1GQpD2aslgv9+vrGmkCAwEAAaNTMFEwHQYDVR0OBBYE
+          FLt5WZfajOpzm7b8qO8Qagkgm9j/MB8GA1UdIwQYMBaAFLt5WZfajOpzm7b8qO8Q
+          agkgm9j/MA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAMi6RjOc
+          6S18b98oSuMFNFHIiYteOrhbItaYAcc6mLP0o3JsO7wCyATpu1xjaEXOJsPuBFJt
+          gFFxqdKntwnQuIsvUtggpNxI4HjV+MZUQm1eCVOS5uPg+BV1bRfNAz1CYiNPaU4h
+          ig7vRHiGvYqYJ5kXs7qIhwy/YDoAbZB3r7zbFIt6AHDIfnRuaSX+PFHesyzuPw5R
+          8udw/65y3v5fa8YWiUNWLGRPo6KCvjg18P++pJ3qB3jo29Gog25MWfP5EdkbrAtB
+          AMxPqyQs+qMgDMBEBEjbzrhqh4uluWa86ebq5Q8u8ts2riEOF9FHG8zDrTTEUzul
+          AJ1Y1Win5TVwD6o=
+          -----END CERTIFICATE-----
       delegate_to: localhost
