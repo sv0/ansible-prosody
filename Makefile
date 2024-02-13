@@ -1,3 +1,4 @@
+DEFAULT_CONTAINER ?= debian-12
 # https://github.com/sio/Makefile.venv
 # Seamlessly manage Python virtual environment with a Makefile
 Makefile.venv:
@@ -13,55 +14,60 @@ include Makefile.venv
 .PHONY: all
 all: Makefile.venv $(VENV) install test
 
-
-.PHONY: help
-help: ## Display this help message
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile \
-		| sort \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-
-
 .PHONY: install
-install: Makefile.venv $(VENV)  ## Install test requirements and mock dependencies
-	# ansible-galaxy install --roles-path .ansible/roles -g -r requirements.yml
-	@mkdir -p library
-	@echo "#!/usr/bin/env bash" > library/registry.sh
-	@echo "#!/usr/bin/env bash" > library/get_mtv_certificate.sh
-	@echo "#!/usr/bin/env bash" > library/verso_set_version.sh
-	@chmod +x ./library/*
-	$(VENV)/pip install -r test-requirements.txt
+install: Makefile.venv $(VENV)
+	$(VENV)/pip install -r requirements.txt
 
 .PHONY: create
-create: ## Start Molecule container
+create:
 	$(VENV)/molecule create
 
 .PHONY: converge
-converge:  # Run ansible role on Molecule container
+converge:
 	$(VENV)/molecule converge
 
 .PHONY: login
-login:  ## Log into Molecule container
-	$(VENV)/molecule login
+login:
+	$(VENV)/molecule login -h $(DEFAULT_CONTAINER)
 
 .PHONY: test
-test: install  ## Run tests using Molecule
+test: install
 	$(VENV)/molecule test
 
 .PHONY: lint
-lint: $(VENV) lint-yaml lint-ansible  ## Run all linters
+lint: $(VENV) yamllint ansible-lint
 
-.PHONY: lint-yaml
-lint-yaml: install  ## Run yamllint
+.PHONY: yamllint
+yamllint: install
 	$(VENV)/yamllint .
 
-.PHONY: lint-ansible
-lint-ansible: install ## Run ansiblelint
+.PHONY: ansible-lint
+ansible-lint: install
 	$(VENV)/ansible-lint .
 
 .PHONY: destroy
-destroy:  ## Destroy molecule container
+destroy:
 	$(VENV)/molecule destroy
 
-.PHONY: trailing-spaces
-trailing-spaces:
-	$(shell find . -type f -name '*.yml' | xargs -n1 sed -i 's/[ \t]*$$//')
+.PHONY: release
+VERSION?=minor
+# target: release - Bump version
+release:
+	$(VENV)/pip install bumpversion
+	@bumpversion $(VERSION)
+	@git checkout master
+	@git merge devel
+	@git checkout devel
+	@git push --all
+	@git push --tags
+
+.PHONY: minor
+minor: release
+
+.PHONY: patch
+patch:
+	make release VERSION=patch
+
+.PHONY: major
+major:
+	make release VERSION=major
