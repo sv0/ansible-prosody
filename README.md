@@ -1,32 +1,32 @@
-Ansible Prosody
-===============
+# Ansible Prosody
+
 [![CI](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml)
 
 Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
 ## Requirements
 
-  - Debian 11 (Bullseye)
-  - Debian 12 (Bookworm)
-  - Ubuntu 18.04
+- Debian 11 (Bullseye)
+- Debian 12 (Bookworm)
+- Ubuntu 18.04
 
 ## Default Variables
 
 see `defaults/main.yml`
 
-
 ## Dependencies
-
 
 ## Download
 
 Download latest release with `ansible-galaxy`
 
+```shell
     ansible-galaxy install sv0.prosody
-
+```
 
 ## Playbook
 
+```yaml
     - hosts: servers
       roles:
         - sv0.prosody
@@ -43,13 +43,15 @@ Download latest release with `ansible-galaxy`
                 -----END CERTIFICATE-----
           - name: svyrydiuk.eu
             admins: ["admin@svyrydiuk.eu"]
-
+```
 
 ## Tests
 
 Run local tests with
 
+```shell
     molecule test
+```
 
 Requires Molecule and Docker to be installed on devel host.
 
@@ -60,7 +62,6 @@ GPL
 ## Author Information
 
 [Slavik Svyrydiuk](https://slavik.svyrydiuk.eu/about.html)
-
 
 ## Usefull links
 
