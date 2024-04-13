@@ -1,22 +1,27 @@
-# Ansible Prosody
+Ansible Prosody
+===============
 
 [![CI](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml)
 
 Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
-## Requirements
+Requirements
+------------
 
 - Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
 - Ubuntu 18.04
 
-## Default Variables
+Default Variables
+-----------------
 
 see `defaults/main.yml`
 
-## Dependencies
+Dependencies
+------------
 
-## Download
+Download
+--------
 
 Download latest release with `ansible-galaxy`
 
@@ -24,7 +29,8 @@ Download latest release with `ansible-galaxy`
     ansible-galaxy install sv0.prosody
 ```
 
-## Playbook
+Playbook
+--------
 
 ```yaml
     - hosts: servers
@@ -45,7 +51,8 @@ Download latest release with `ansible-galaxy`
             admins: ["admin@svyrydiuk.eu"]
 ```
 
-## Tests
+Tests
+-----
 
 Run local tests with
 
@@ -55,14 +62,17 @@ Run local tests with
 
 Requires Molecule and Docker to be installed on devel host.
 
-## License
+License
+-------
 
 GPL
 
-## Author Information
+Author Information
+------------------
 
 [Slavik Svyrydiuk](https://slavik.svyrydiuk.eu/about.html)
 
-## Usefull links
+Usefull links
+-------------
 
 - [Modern XMPP Server](https://docs.trueelena.org/self_hosting/modern_xmpp_server/index.html)
