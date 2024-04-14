@@ -6,7 +6,7 @@ galaxy_info:
   description: Install and configure Prosody XMPP server
   company: svyrydiuk.eu
   license: GPLv3
-  min_ansible_version: "2.11"
+  min_ansible_version: "2.14"
   galaxy_tags:
     - xmpp
     - jabber
