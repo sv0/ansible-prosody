@@ -56,8 +56,10 @@
     file: tls.yml
     apply:
       tags:
+        - certificate
         - cert
         - tls
+  tags: always
 
 - name: Create parameters for Diffie–Hellman
   ansible.builtin.command:
