@@ -15,7 +15,15 @@ Requirements
 Default Variables
 -----------------
 
-see `defaults/main.yml`
+Directory where TLS certificate could be found.
+I use ACME client [dehydrated](https://dehydrated.io),
+so all otained certificates are in `/var/lib/dehydrated/certs`
+
+```yaml
+prosody_certificate_dir: "/var/lib/dehydrated/certs"
+```
+
+see `defaults/main.yml` for more details.
 
 Dependencies
 ------------
@@ -37,18 +45,7 @@ Playbook
       roles:
         - sv0.prosody
       vars:
-        prosody_virtual_hosts:
-          - name: example.net
-            key: |
-              -----BEGIN PRIVATE KEY-----
-                ...
-              -----END PRIVATE KEY-----
-            cert: |
-                -----BEGIN CERTIFICATE-----
-                  ...
-                -----END CERTIFICATE-----
-          - name: svyrydiuk.eu
-            admins: ["admin@svyrydiuk.eu"]
+        prosody_vhost: example.com
 ```
 
 Tests
