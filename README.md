@@ -65,7 +65,7 @@ Requires Molecule and Docker to be installed on devel host.
 License
 -------
 
-GPL
+MIT
 
 Author Information
 ------------------
