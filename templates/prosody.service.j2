@@ -8,9 +8,7 @@ Documentation=https://prosody.im/doc
 # With this configuration, systemd takes care of daemonization
 # so Prosody should be configured with daemonize = false
 Type=simple
-
-# Not sure if this is needed for 'simple'
-PIDFile=/var/run/prosody/prosody.pid
+PIDFile=/run/prosody/prosody.pid
 
 # Start by executing the main executable
 ExecStart=/usr/bin/prosody
