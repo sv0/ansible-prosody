@@ -22,7 +22,7 @@
     owner: root
     group: prosody
     mode: 0640
-  notify: Reload prosody config
+  notify: Restart prosody
 
 - name: "Push TLS key for {{ prosody_vhost }}"
   ansible.builtin.copy:
@@ -31,4 +31,4 @@
     owner: root
     group: prosody
     mode: 0640
-  notify: Reload prosody config
+  notify: Restart prosody
