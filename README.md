@@ -73,3 +73,5 @@ Usefull links
 -------------
 
 - [Modern XMPP Server](https://docs.trueelena.org/self_hosting/modern_xmpp_server/index.html)
+- [XMPP Compliance Tester](https://compliance.conversations.im)
+- [This page tests the trickle ICE functionality in a WebRTC implementation](https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/)
