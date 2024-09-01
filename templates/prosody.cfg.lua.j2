@@ -49,7 +49,8 @@ modules_enabled = {
 		"uptime"; -- Report how long server has been running
 		"version"; -- Replies to server version requests
 		"mam"; -- Store recent messages to allow multi-device synchronization
-		--"turn_external"; -- Provide external STUN/TURN service for e.g. audio/video calls
+		"turn_external"; -- Provide external STUN/TURN service for e.g. audio/video calls
+		"server_contact_info"; -- Publish contact information for this service
 
 	-- Admin interfaces
 		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
@@ -68,7 +69,6 @@ modules_enabled = {
 		--"motd"; -- Send a message to users when they log in
 		--"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
 		--"s2s_bidi"; -- Bi-directional server-to-server (XEP-0288)
-		--"server_contact_info"; -- Publish contact information for this service
 		--"tombstones"; -- Prevent registration of deleted accounts
 		--"watchregistrations"; -- Alert admins of registrations
 		--"welcome"; -- Welcome users who register accounts
@@ -83,6 +83,12 @@ modules_disabled = {
 	-- "posix"; -- POSIX functionality, sends server to background, etc.
 }
 
+contact_info = {
+	abuse = { "mailto:abuse@{{ prosody_vhost }}", "xmpp:abuse@{{ prosody_vhost }}" };
+	admin = { "mailto:admin@{{ prosody_vhost }}", "xmpp:admin@{{ prosody_vhost }}" };
+	security = { "xmpp:security@{{ prosody_vhost }}" };
+	support = { "http://{{ prosody_vhost }}/support.php", "xmpp:support@muc.{{ prosody_vhost }}?join" };
+}
 
 -- Server-to-server authentication
 -- Require valid certificates for server-to-server connections?
@@ -165,10 +171,10 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
 -- Find more information at https://prosody.im/doc/turn
 
 -- Specify the address of the TURN service (you may use the same domain as XMPP)
--- turn_external_host = "turn.example.com"
+turn_external_host = "{{ prosody_turn_external_host }}"
 
 -- This secret must be set to the same value in both Prosody and the TURN server
--- turn_external_secret = "your-secret-turn-access-token"
+turn_external_secret = "{{ prosody_turn_external_secret }}"
 
 
 -- Logging configuration
