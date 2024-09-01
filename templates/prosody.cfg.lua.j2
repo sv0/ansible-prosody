@@ -11,6 +11,9 @@ admins = {
 {% endfor %}
 }
 
+legacy_ssl_ports = { 5223 }
+proxy65_ports = {5225}
+
 -- This option allows you to specify additional locations where Prosody
 -- will search first for modules. For additional modules you can install, see
 -- the community module repository at https://modules.prosody.im/
@@ -51,6 +54,7 @@ modules_enabled = {
 		"mam"; -- Store recent messages to allow multi-device synchronization
 		"turn_external"; -- Provide external STUN/TURN service for e.g. audio/video calls
 		"server_contact_info"; -- Publish contact information for this service
+		"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
 
 	-- Admin interfaces
 		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
@@ -67,7 +71,6 @@ modules_enabled = {
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
 		--"mimicking"; -- Prevent address spoofing
 		--"motd"; -- Send a message to users when they log in
-		--"proxy65"; -- Enables a file transfer proxy service which clients behind NAT can use
 		--"s2s_bidi"; -- Bi-directional server-to-server (XEP-0288)
 		--"tombstones"; -- Prevent registration of deleted accounts
 		--"watchregistrations"; -- Alert admins of registrations
