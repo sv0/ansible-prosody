@@ -51,9 +51,14 @@
     - Reload systemd
     - Reload prosody config
 
-- name: Include tasks from tls.yml
+# Add `install modules` task here
+# prosodyctl install --server=https://modules.prosody.im/rocks/ mod_vcard_muc
+# prosodyctl install --server=https://modules.prosody.im/rocks/ mod_cloud_notify
+# mod_cloud_notify
+
+- name: Include tasks from certificate.yml
   ansible.builtin.include_tasks:
-    file: tls.yml
+    file: certificate.yml
     apply:
       tags:
         - certificate
