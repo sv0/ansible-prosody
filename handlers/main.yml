@@ -9,16 +9,16 @@
     state: reloaded
 
 - name: Restart prosody
-  ansible.legacy.systemd:
+  ansible.legacy.service:
     name: prosody
     state: restarted
 
 - name: Stop prosody
-  ansible.legacy.systemd:
+  ansible.legacy.service:
     name: prosody
     state: stopped
 
 - name: Start prosody
-  ansible.legacy.systemd:
+  ansible.legacy.service:
     name: prosody
     state: started
