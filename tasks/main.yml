@@ -1,10 +1,29 @@
 ---
+- name: Debug ansible_os_family and ansible_distribution
+  ansible.builtin.debug:
+    msg: "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
+
+# - name: Import assert tasks
+#   ansible.builtin.import_tasks:
+#     file: asserts.yml
+#   tags:
+#     - assert
+#     - asserts
+
+- name: Initialize distribution-specific variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
+
 # - name: Debug ansible_facts
 #   ansible.builtin.debug:
 #     var: ansible_facts
 #     # e.g. ["ansible_service_mgr"] == "systemd"
 
 - name: Add prosody GPG key and repository
+  when:
+    - ansible_distribution == 'Debian'
   block:
     - name: Add gpg key
       ansible.builtin.get_url:
@@ -44,11 +63,10 @@
     src: prosody.cfg.lua.j2
     dest: /etc/prosody/prosody.cfg.lua
     owner: root
-    group: prosody
+    group: "{{ prosody_group }}"
     mode: 0640
     backup: true
   notify:
-    - Reload systemd
     - Reload prosody config
 
 # Add `install modules` task here
@@ -92,8 +110,8 @@
     - user
 
 - name: Create Prosody accounts
+  #  set -o pipefail;
   ansible.builtin.shell:
-    set -o pipefail;
     printf "%s\n%s\n" "{{ item.password }}" "{{ item.password }}"
     | prosodyctl adduser {{ item.username }}
   with_items: "{{ prosody_accounts }}"
