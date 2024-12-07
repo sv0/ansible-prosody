@@ -2,6 +2,14 @@
 -- when you have finished by running this command:
 -- prosodyctl check config
 
+-- Drop privileges
+prosody_user = "{{ prosody_user }}"
+prosody_group = "{{ prosody_group }}"
+
+-- Enable POSIX-only options
+-- Required for init scripts and prosodyctl
+pidfile = "{{ prosody_pidfile }}"
+
 ---------- Server-wide settings ----------
 -- (see https://prosody.im/doc/creating_accounts for info)
 -- Example: admins = { "user1@example.com", "user2@example.net" }
@@ -11,8 +19,8 @@ admins = {
 {% endfor %}
 }
 
-legacy_ssl_ports = { 5223 }
-proxy65_ports = {5225}
+c2s_direct_tls_ports = { {{ prosody_c2s_ports }} }
+proxy65_ports = { 5225 }
 
 -- This option allows you to specify additional locations where Prosody
 -- will search first for modules. For additional modules you can install, see
@@ -126,8 +134,6 @@ limits = {
 	};
 }
 
--- Required for init scripts and prosodyctl
-pidfile = "/var/run/prosody/prosody.pid"
 
 -- Authentication
 -- Select the authentication backend to use. The 'internal' providers
