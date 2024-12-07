@@ -1,4 +1,9 @@
 ---
+prosody_user: "prosody"
+prosody_group: "prosody"
+
+prosody_pidfile: /run/prosody/prosody.pid
+
 prosody_vhost: "{{ inventory_hostname }}"
 prosody_c2s_ports: 5222
 prosody_s2s_ports: 5269
