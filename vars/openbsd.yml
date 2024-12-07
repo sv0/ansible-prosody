@@ -1,6 +1,7 @@
 ---
 prosody_user: _prosody
 prosody_group: _prosody
+prosody_pidfile: /var/prosody/prosody.pid
 prosody_listen_on: "egress"
 prosody_packages:
   - "prosody"
