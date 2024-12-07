@@ -20,7 +20,7 @@
     src: "{{ certificate_fullchain }}"
     dest: "/etc/prosody/certs/{{ prosody_vhost }}.crt"
     owner: root
-    group: prosody
+    group: "{{ prosody_group }}"
     mode: 0640
   notify: Restart prosody
 
@@ -29,6 +29,6 @@
     src: "{{ certificate_privkey }}"
     dest: "/etc/prosody/certs/{{ prosody_vhost }}.key"
     owner: root
-    group: prosody
+    group: "{{ prosody_group }}"
     mode: 0640
   notify: Restart prosody
