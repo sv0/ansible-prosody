@@ -4,7 +4,7 @@
     daemon_reload: true
 
 - name: Reload prosody config
-  ansible.legacy.systemd:
+  ansible.legacy.service:
     name: prosody
     state: reloaded
 
