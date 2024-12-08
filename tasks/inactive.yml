@@ -5,7 +5,7 @@
     dest: /usr/local/bin/prosody_inactive_users
     owner: root
     group: root
-    mode: 0755
+    mode: "0755"
 
 - name: Enable cron job to clean inactive users
   ansible.legacy.cron:

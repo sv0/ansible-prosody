@@ -22,7 +22,7 @@
       ansible.builtin.file:
         path: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}"
         state: directory
-        mode: 0755
+        mode: "0755"
       delegate_to: localhost
 
     - name: Create test private key

@@ -21,7 +21,7 @@
     dest: "/etc/prosody/certs/{{ prosody_vhost }}.crt"
     owner: root
     group: "{{ prosody_group }}"
-    mode: 0640
+    mode: "0640"
   notify: Restart prosody
 
 - name: "Push TLS key for {{ prosody_vhost }}"
@@ -30,5 +30,5 @@
     dest: "/etc/prosody/certs/{{ prosody_vhost }}.key"
     owner: root
     group: "{{ prosody_group }}"
-    mode: 0640
+    mode: "0640"
   notify: Restart prosody
