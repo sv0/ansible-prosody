@@ -6,6 +6,7 @@ prosody_pidfile: /run/prosody/prosody.pid
 
 prosody_vhost: "{{ inventory_hostname }}"
 prosody_c2s_ports: 5222
+prosody_c2s_direct_tls_ports: 5223
 prosody_s2s_ports: 5269
 
 prosody_admins:
