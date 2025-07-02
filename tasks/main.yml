@@ -11,10 +11,10 @@
 #     - asserts
 
 - name: Initialize distribution-specific variables
-  ansible.builtin.include_vars: "{{ item }}"
+  ansible.builtin.include_vars: "packages-{{ item }}.yml"
   with_first_found:
-    - "{{ ansible_distribution | lower }}.yml"
-    - "{{ ansible_os_family | lower }}.yml"
+    - "{{ ansible_distribution | lower }}"
+    - "{{ ansible_os_family | lower }}"
 
 # - name: Debug ansible_facts
 #   ansible.builtin.debug:
