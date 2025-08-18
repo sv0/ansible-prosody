@@ -2,7 +2,6 @@
 driver:
   name: docker
 
-
 platforms:
   - name: debian-11
     image: "slavik0/debian-11-systemd"
