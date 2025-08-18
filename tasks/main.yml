@@ -1,16 +1,35 @@
 ---
+- name: Debug ansible_os_family and ansible_distribution
+  ansible.builtin.debug:
+    msg: "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
+
+# - name: Import assert tasks
+#   ansible.builtin.import_tasks:
+#     file: asserts.yml
+#   tags:
+#     - assert
+#     - asserts
+
+- name: Initialize distribution-specific variables
+  ansible.builtin.include_vars: "packages-{{ item }}.yml"
+  with_first_found:
+    - "{{ ansible_distribution | lower }}"
+    - "{{ ansible_os_family | lower }}"
+
 # - name: Debug ansible_facts
 #   ansible.builtin.debug:
 #     var: ansible_facts
 #     # e.g. ["ansible_service_mgr"] == "systemd"
 
 - name: Add prosody GPG key and repository
+  when:
+    - ansible_distribution == 'Debian'
   block:
     - name: Add gpg key
       ansible.builtin.get_url:
         url: https://prosody.im/files/prosody-debian-packages.key
         dest: /etc/apt/trusted.gpg.d/prosody.gpg
-        mode: 0644
+        mode: "0644"
 
     - name: Add specified repository into sources list using specified filename
       ansible.builtin.apt_repository:
@@ -30,7 +49,7 @@
   ansible.builtin.template:
     src: prosody.service.j2
     dest: /etc/systemd/system/prosody.service
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   notify:
@@ -44,20 +63,26 @@
     src: prosody.cfg.lua.j2
     dest: /etc/prosody/prosody.cfg.lua
     owner: root
-    group: prosody
-    mode: 0640
+    group: "{{ prosody_group }}"
+    mode: "0640"
     backup: true
   notify:
-    - Reload systemd
     - Reload prosody config
 
-- name: Include tasks from tls.yml
+# Add `install modules` task here
+# prosodyctl install --server=https://modules.prosody.im/rocks/ mod_vcard_muc
+# prosodyctl install --server=https://modules.prosody.im/rocks/ mod_cloud_notify
+# mod_cloud_notify
+
+- name: Include tasks from certificate.yml
   ansible.builtin.include_tasks:
-    file: tls.yml
+    file: certificate.yml
     apply:
       tags:
+        - certificate
         - cert
         - tls
+  tags: always
 
 - name: Create parameters for Diffie–Hellman
   ansible.builtin.command:
@@ -85,8 +110,8 @@
     - user
 
 - name: Create Prosody accounts
+  #  set -o pipefail;
   ansible.builtin.shell:
-    set -o pipefail;
     printf "%s\n%s\n" "{{ item.password }}" "{{ item.password }}"
     | prosodyctl adduser {{ item.username }}
   with_items: "{{ prosody_accounts }}"

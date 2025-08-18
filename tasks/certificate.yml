@@ -20,15 +20,15 @@
     src: "{{ certificate_fullchain }}"
     dest: "/etc/prosody/certs/{{ prosody_vhost }}.crt"
     owner: root
-    group: prosody
-    mode: 0640
-  notify: Reload prosody config
+    group: "{{ prosody_group }}"
+    mode: "0640"
+  notify: Restart prosody
 
 - name: "Push TLS key for {{ prosody_vhost }}"
   ansible.builtin.copy:
     src: "{{ certificate_privkey }}"
     dest: "/etc/prosody/certs/{{ prosody_vhost }}.key"
     owner: root
-    group: prosody
-    mode: 0640
-  notify: Reload prosody config
+    group: "{{ prosody_group }}"
+    mode: "0640"
+  notify: Restart prosody

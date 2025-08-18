@@ -16,7 +16,10 @@ all: Makefile.venv $(VENV) install test
 
 .PHONY: install
 install: Makefile.venv $(VENV)
-	$(VENV)/pip install -r requirements.txt
+@$(VENV)/pip install \
+		--quiet \
+		--requirement requirements.txt \
+		--disable-pip-version-check
 
 .PHONY: create
 create:
