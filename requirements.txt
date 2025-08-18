@@ -1,6 +1,6 @@
-molecule>=4.0,<24.12.99
-molecule-plugins[docker]<=23.5.3
-ansible-core>=2.11,<=2.19
-ansible-lint>=6.0,<24.10.99
-pytest>=7.4,<=8.4
-pytest-testinfra>=7.0,<=10.1.1
+molecule>=4.0,<25.12.99
+molecule-plugins[docker]<=25.12.99
+ansible-core>=2.11,<2.20
+ansible-lint>=6.0,<25.12.99
+pytest>=7.4,<9.0
+pytest-testinfra>=7.0,<11.0
