@@ -1,19 +1,24 @@
-Ansible Prosody
-===============
+Ansible Prosody v. 0.0.1
+========================
 
 [![CI](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml)
 
 Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
-Requirements
-------------
+It has been tested for the following operating systems:
 
 - Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
-- Ubuntu 18.04
+- Ubuntu 22.04.5 LTS
 
-Default Variables
------------------
+Requirements
+------------
+
+Ansible 2.19 version installed.
+
+
+Variables
+---------
 
 Directory where TLS certificate could be found.
 I use ACME client [dehydrated](https://dehydrated.io),
