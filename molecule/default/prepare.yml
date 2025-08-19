@@ -37,6 +37,7 @@
     - name: Create test private key
       ansible.builtin.copy:
         dest: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/privkey.pem"
+        mode: "0600"
         content:
           -----BEGIN PRIVATE KEY-----
           MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDrbXkGoqSTMtDk
@@ -71,6 +72,7 @@
     - name: Create Self Signed test certificate
       ansible.builtin.copy:
         dest: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}/fullchain.pem"
+        mode: "0600"
         content:
           -----BEGIN CERTIFICATE-----
           MIIDlzCCAn+gAwIBAgIUGu8z1kppDW8TBVdqi7S2qVI3DJ8wDQYJKoZIhvcNAQEL
