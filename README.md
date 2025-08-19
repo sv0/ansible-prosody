@@ -1,4 +1,4 @@
-Ansible Prosody v. 0.0.1
+Ansible Prosody v. 0.1.0
 ========================
 
 [![CI](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml)
