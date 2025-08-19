@@ -3,24 +3,16 @@
   ansible.builtin.debug:
     msg: "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
 
-# - name: Import assert tasks
-#   ansible.builtin.import_tasks:
-#     file: asserts.yml
-#   tags:
-#     - assert
-#     - asserts
-
 - name: Initialize distribution-specific variables
-  ansible.builtin.include_vars: "packages-{{ item }}.yml"
+  ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
-    - "{{ ansible_distribution | lower }}"
-    - "{{ ansible_os_family | lower }}"
+    - "{{ ansible_distribution | lower }}.yml"
+    - "{{ ansible_os_family | lower }}.yml"
 
 # - name: Debug ansible_facts
 #   ansible.builtin.debug:
 #     var: ansible_facts
 #     # e.g. ["ansible_service_mgr"] == "systemd"
-
 - name: Add prosody GPG key and repository
   when:
     - ansible_distribution == 'Debian'
@@ -44,6 +36,18 @@
     name: "{{ prosody_packages }}"
   notify:
     - Restart prosody
+
+- name: Install lua5.4
+  ansible.builtin.apt:
+    name: lua5.4
+  when: ansible_distribution == 'Debian'
+
+- name: Set lua alternative
+  community.general.alternatives:
+    name: lua-interpreter
+    path: /usr/bin/lua5.4
+  when: ansible_distribution == 'Debian'
+
 
 - name: Create systemd service file
   ansible.builtin.template:

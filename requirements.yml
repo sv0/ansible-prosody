@@ -1,0 +1,7 @@
+---
+roles: []
+
+collections:
+  - name: community.general
+    version: "11.2.1"
+    source: https://galaxy.ansible.com

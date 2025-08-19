@@ -18,6 +18,15 @@
       ansible.builtin.apt:
         name: net-tools
 
+    - name: Install lua5.4
+      ansible.builtin.apt:
+        name: lua5.4
+
+    - name: Remove lua5.1
+      ansible.builtin.apt:
+        name: lua5.1
+        state: absent
+
     - name: Create temporary directory
       ansible.builtin.file:
         path: "{{ prosody_certificate_dir }}/{{ prosody_vhost }}"
