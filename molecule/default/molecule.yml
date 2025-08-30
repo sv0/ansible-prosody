@@ -30,8 +30,6 @@ platforms:
     cgroupns_mode: host
     pre_build_image: true
 
-
-
 provisioner:
   name: ansible
   env:
@@ -40,7 +38,6 @@ provisioner:
     group_vars:
       all:
         prosody_vhost: "{{ inventory_hostname }}"
-
 
 verifier:
   name: testinfra
