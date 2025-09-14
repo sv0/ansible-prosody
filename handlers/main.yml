@@ -22,3 +22,8 @@
   ansible.legacy.service:
     name: prosody
     state: started
+
+- name: Restart turnserver
+  ansible.legacy.service:
+    name: coturn
+    state: restarted
