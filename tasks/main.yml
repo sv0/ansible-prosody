@@ -1,7 +1,10 @@
 ---
 - name: Debug ansible_os_family and ansible_distribution
   ansible.builtin.debug:
-    msg: "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
+    msg:
+      - "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
+      - "ansible_os_family: {{ ansible_os_family }}"
+      - "ansible_distribution: {{ ansible_distribution }}"
 
 - name: Initialize distribution-specific variables
   ansible.builtin.include_vars: "{{ item }}"
@@ -13,9 +16,10 @@
 #   ansible.builtin.debug:
 #     var: ansible_facts
 #     # e.g. ["ansible_service_mgr"] == "systemd"
+
 - name: Add prosody GPG key and repository
   when:
-    - ansible_distribution == 'Debian'
+    - ansible_os_family == 'Debian'
   block:
     - name: Add gpg key
       ansible.builtin.get_url:
@@ -26,7 +30,7 @@
     - name: Add specified repository into sources list using specified filename
       ansible.builtin.apt_repository:
         repo:
-          "deb https://packages.prosody.im/debian \
+          "deb http://packages.prosody.im/debian \
            {{ ansible_distribution_release }} main"
         state: present
         filename: prosody
@@ -73,10 +77,21 @@
   notify:
     - Reload prosody config
 
+# TODO
 # Add `install modules` task here
 # prosodyctl install --server=https://modules.prosody.im/rocks/ mod_vcard_muc
 # prosodyctl install --server=https://modules.prosody.im/rocks/ mod_cloud_notify
-# mod_cloud_notify
+
+- name: Create /etc/turnserver.conf
+  ansible.builtin.template:
+    src: turnserver.conf.j2
+    dest: /etc/turnserver.conf
+    owner: root
+    group: turnserver
+    mode: "0640"
+    backup: true
+  notify:
+    - Restart turnserver
 
 - name: Include tasks from certificate.yml
   ansible.builtin.include_tasks:
