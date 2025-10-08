@@ -7,15 +7,14 @@ Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
 
 It has been tested for the following operating systems:
 
-- Debian 11 (Bullseye)
 - Debian 12 (Bookworm)
+- Debian 13 (Trixie)
 - Ubuntu 22.04.5 LTS
 
 Requirements
 ------------
 
 Ansible 2.19 version installed.
-
 
 Variables
 ---------
