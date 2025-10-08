@@ -118,8 +118,6 @@ prosody_packages:
   # see https://prosody.im/doc/coturn
   - coturn
 
-prosody_stun_port: 5555
-
 # Specify the address of the TURN service (you may use the same domain as XMPP)
 prosody_turn_external_host: "stun.svyrydiuk.eu"
 # This secret must be set to the same value in both Prosody and the TURN server
