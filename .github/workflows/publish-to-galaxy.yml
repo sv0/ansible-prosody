@@ -2,7 +2,6 @@
 name: Galaxy Action
 
 on:  # yamllint disable-line rule:truthy
-  workflow_dispatch:
   workflow_run:
     workflows:
       - "Main workflow"
@@ -15,6 +14,7 @@ on:  # yamllint disable-line rule:truthy
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: checkout
         uses: actions/checkout@v4
