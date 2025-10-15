@@ -33,12 +33,24 @@ def test_files(host, files):
     assert f.is_file
 
 
-def test_user(host):
-    assert host.group("prosody").exists
-    assert host.user("prosody").exists
+@pytest.mark.parametrize("group", [
+    "turnserver",
+    "prosody",
+])
+def test_group(host, group):
+    assert host.group(group).exists
+
+
+@pytest.mark.parametrize("user", [
+    "turnserver",
+    "prosody",
+])
+def test_user(host, user):
+    assert host.user(user).exists
 
 
 @pytest.mark.parametrize("service", [
+    "coturn",
     "prosody",
 ])
 def test_service(host, service):
@@ -47,7 +59,7 @@ def test_service(host, service):
     assert s.is_running
 
 
-@pytest.mark.parametrize("port", [5222, 5269])
+@pytest.mark.parametrize("port", [5222, 5223, 5225, 5269, 5281])
 def test_socket(host, port):
     s = host.socket(f"tcp://0.0.0.0:{port}")
     assert s.is_listening
