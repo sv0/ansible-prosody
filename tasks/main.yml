@@ -1,14 +1,10 @@
 ---
 - name: Debug ansible_os_family and ansible_distribution
   ansible.builtin.debug:
-    msg: "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
-
-# - name: Import assert tasks
-#   ansible.builtin.import_tasks:
-#     file: asserts.yml
-#   tags:
-#     - assert
-#     - asserts
+    msg:
+      - "Ansible runs on {{ ansible_os_family }}, {{ ansible_distribution }}."
+      - "ansible_os_family: {{ ansible_os_family }}"
+      - "ansible_distribution: {{ ansible_distribution }}"
 
 - name: Initialize distribution-specific variables
   ansible.builtin.include_vars: "{{ item }}"
@@ -16,25 +12,20 @@
     - "{{ ansible_distribution | lower }}.yml"
     - "{{ ansible_os_family | lower }}.yml"
 
-# - name: Debug ansible_facts
-#   ansible.builtin.debug:
-#     var: ansible_facts
-#     # e.g. ["ansible_service_mgr"] == "systemd"
-
 - name: Add prosody GPG key and repository
   when:
-    - ansible_distribution == 'Debian'
+    - ansible_os_family == 'Debian'
   block:
     - name: Add gpg key
       ansible.builtin.get_url:
         url: https://prosody.im/files/prosody-debian-packages.key
         dest: /etc/apt/trusted.gpg.d/prosody.gpg
-        mode: 0644
+        mode: "0644"
 
     - name: Add specified repository into sources list using specified filename
       ansible.builtin.apt_repository:
         repo:
-          "deb https://packages.prosody.im/debian \
+          "deb http://packages.prosody.im/debian \
            {{ ansible_distribution_release }} main"
         state: present
         filename: prosody
@@ -45,11 +36,23 @@
   notify:
     - Restart prosody
 
+- name: Install lua5.4
+  ansible.builtin.apt:
+    name: lua5.4
+  when: ansible_distribution == 'Debian'
+
+- name: Set lua alternative
+  community.general.alternatives:
+    name: lua-interpreter
+    path: /usr/bin/lua5.4
+  when: ansible_distribution == 'Debian'
+
+
 - name: Create systemd service file
   ansible.builtin.template:
     src: prosody.service.j2
     dest: /etc/systemd/system/prosody.service
-    mode: 0644
+    mode: "0644"
     owner: root
     group: root
   notify:
@@ -64,15 +67,26 @@
     dest: /etc/prosody/prosody.cfg.lua
     owner: root
     group: "{{ prosody_group }}"
-    mode: 0640
+    mode: "0640"
     backup: true
   notify:
     - Reload prosody config
 
+# TODO
 # Add `install modules` task here
 # prosodyctl install --server=https://modules.prosody.im/rocks/ mod_vcard_muc
 # prosodyctl install --server=https://modules.prosody.im/rocks/ mod_cloud_notify
-# mod_cloud_notify
+
+- name: Create /etc/turnserver.conf
+  ansible.builtin.template:
+    src: turnserver.conf.j2
+    dest: /etc/turnserver.conf
+    owner: root
+    group: turnserver
+    mode: "0640"
+    backup: true
+  notify:
+    - Restart turnserver
 
 - name: Include tasks from certificate.yml
   ansible.builtin.include_tasks:

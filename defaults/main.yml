@@ -5,7 +5,7 @@ prosody_group: "prosody"
 prosody_pidfile: /run/prosody/prosody.pid
 
 prosody_vhost: "{{ inventory_hostname }}"
-prosody_c2s_ports: 5222
+prosody_c2s_direct_tls_ports: 5223
 prosody_s2s_ports: 5269
 
 prosody_admins:
@@ -117,9 +117,6 @@ prosody_packages:
   # TURN and STUN server
   # see https://prosody.im/doc/coturn
   - coturn
-
-prosody_stun_port: 5555
-prosody_libevent: true
 
 # Specify the address of the TURN service (you may use the same domain as XMPP)
 prosody_turn_external_host: "stun.svyrydiuk.eu"

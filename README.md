@@ -1,26 +1,32 @@
-Ansible Prosody
-===============
+Ansible Prosody v. 0.1.1
+========================
 
-[![CI](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/ci.yml)
+[![Main workflow](https://github.com/sv0/ansible-prosody/actions/workflows/main.yml/badge.svg)](https://github.com/sv0/ansible-prosody/actions/workflows/main.yml)
 
 Install and configure [Prosody](http://prosody.im/) XMPP(Jabber) server.
+
+It has been tested for the following operating systems:
+
+- Debian 12 (Bookworm)
+- Debian 13 (Trixie)
+- Ubuntu 22.04.5 LTS
 
 Requirements
 ------------
 
-- Debian 11 (Bullseye)
-- Debian 12 (Bookworm)
-- Ubuntu 18.04
+Ansible 2.19 version installed.
 
-Default Variables
------------------
+Variables
+---------
 
 Directory where TLS certificate could be found.
 I use ACME client [dehydrated](https://dehydrated.io),
 so all otained certificates are in `/var/lib/dehydrated/certs`
 
 ```yaml
+
 prosody_certificate_dir: "/var/lib/dehydrated/certs"
+
 ```
 
 see `defaults/main.yml` for more details.
@@ -34,18 +40,22 @@ Download
 Download latest release with `ansible-galaxy`
 
 ```shell
+
     ansible-galaxy install sv0.prosody
+
 ```
 
 Playbook
 --------
 
 ```yaml
+
     - hosts: servers
       roles:
         - sv0.prosody
       vars:
         prosody_vhost: example.com
+
 ```
 
 Tests
@@ -54,7 +64,9 @@ Tests
 Run local tests with
 
 ```shell
+
     molecule test
+
 ```
 
 Requires Molecule and Docker to be installed on devel host.

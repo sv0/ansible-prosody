@@ -1,0 +1,11 @@
+---
+prosody_packages:
+  - prosody-13.0
+  - lua-sec
+  - lua-bitop
+  - lua-event
+  # deployment and management system for Lua modules
+  - luarocks
+  # TURN and STUN server
+  # see https://prosody.im/doc/coturn
+  - coturn
