@@ -12,11 +12,6 @@
     - "{{ ansible_distribution | lower }}.yml"
     - "{{ ansible_os_family | lower }}.yml"
 
-# - name: Debug ansible_facts
-#   ansible.builtin.debug:
-#     var: ansible_facts
-#     # e.g. ["ansible_service_mgr"] == "systemd"
-
 - name: Add prosody GPG key and repository
   when:
     - ansible_os_family == 'Debian'
