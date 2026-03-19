@@ -100,9 +100,9 @@ prosody_http_default_host: "upload.{{ prosody_vhost }}"
 
 prosody_http_external_url: "" # Set if required, e.g. "https://upload.svyrydiuk.eu/"
 prosody_http_ports: 5280
-prosody_http_interfaces: ["*", "::"]
+prosody_http_interfaces: '"*", "::"'
 prosody_https_ports: 5281
-prosody_https_interfaces: ["*", "::"]
+prosody_https_interfaces: '"*", "::"'
 prosody_http_upload_file_size_limit: 10485760  # 10 MB
 prosody_http_upload_expire_after: 2592000  # 30 days in seconds
 prosody_http_upload_quota: 52428800  # 50 MB
