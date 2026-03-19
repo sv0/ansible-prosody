@@ -98,7 +98,7 @@ prosody_max_history_messages: 100
 # http upload settings
 prosody_http_default_host: "upload.{{ prosody_vhost }}"
 
-prosody_http_external_url: "" # Set if required, e.g. "https://upload.svyrydiuk.eu/"
+prosody_http_external_url: ""
 prosody_http_ports: 5280
 prosody_http_interfaces: '"*", "::"'
 prosody_https_ports: 5281
