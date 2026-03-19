@@ -19,6 +19,12 @@ admins = {
 {% endfor %}
 }
 
+component_ports = { 5347 }
+component_interfaces = { {{ prosody_http_interfaces }} }
+
+http_ports = { {{ prosody_http_ports }} }
+http_interfaces = { {{ prosody_http_interfaces }} }
+
 c2s_direct_tls_ports = { {{ prosody_c2s_direct_tls_ports }} }
 proxy65_ports = { 5225 }
 
@@ -221,14 +227,20 @@ Component "conference.{{ prosody_vhost }}" "muc"
     }
     restrict_room_creation = "local"
     -- Disable logging by default (can be enabled in room config)
-    muc_log_by_default = {{ prosody_muc_log_by_default }}
+    muc_log_by_default = {{ prosody_muc_log_by_default | bool }}
     muc_log_all_rooms = false -- set to true to force logging of all rooms
     max_history_messages = {{ prosody_max_history_messages }}
     disco_items = {
-        { "upload.{{ prosody_vhost }}", "file sharing service" },
+        { "{{ prosody_http_default_host }}", "file sharing service" },
     }
 
-Component "upload.{{ prosody_vhost }}" "http_file_share"
+Component "{{ prosody_http_default_host }}" "http_file_share"
+    -- allow slidgram to use the upload component
+    http_file_share_access = { "slidge.{{ prosody_vhost }}" }
+    {% if prosody_http_external_url %}
+    http_external_url = "{{ prosody_http_external_url }}"
+    {% endif %}
+    trusted_proxies = { "127.0.0.1", "::1", "192.168.0.99", }
 
 external_services = {
         ["stun.{{ prosody_vhost }}"] = {
