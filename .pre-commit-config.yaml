@@ -4,23 +4,41 @@
 # See https://github.com/pre-commit/pre-commit-hooks/tree/main/pre_commit_hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v4.5.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
         exclude: |
           (?x)^(
-            path/to/some-file.yml
+            dir1/file1.yml|
+            path/to/yaml_file_to_exclude.yml
           )$
       - id: check-added-large-files
 
-  - repo: https://github.com/markdownlint/markdownlint
-    rev: v0.13.0
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
     hooks:
+      - id: yamllint
+        args: [-c=.yamllint]
+
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0  # or specific git tag
+    hooks:
+      - id: shellcheck
       - id: markdownlint
-        name: Markdownlint
-        description: Run markdownlint on your Markdown files
-        entry: mdl
-        language: ruby
-        files: \.(md|mdown|markdown)$
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.1.0
+    hooks:
+      - id: flake8
+
+  - repo: https://github.com/robertdebock/pre-commit
+    rev: v1.5.2
+    hooks:
+      - id: ansible_role_find_unused_variable
+      # - id: ansible_role_find_empty_files
+      - id: ansible_role_find_empty_directories
+      - id: ansible_role_fix_readability
+      - id: ansible_role_find_undefined_handlers
+      - id: ansible_role_find_unquoted_values

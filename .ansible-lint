@@ -1,11 +1,8 @@
 ---
-parseable: true
-use_default_rules: true
+# use_default_rules: true
 verbosity: 1
 
 exclude_paths:
-  - .venv
-  - ansible
+  - ./.github
 
-warn_list:
-  - risky-shell-pipe
+warn_list: []
