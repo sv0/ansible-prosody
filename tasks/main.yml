@@ -71,6 +71,8 @@
     backup: true
   notify:
     - Reload prosody config
+  tags:
+    - conf
 
 # TODO
 # Add `install modules` task here
@@ -126,8 +128,11 @@
 - name: Create Prosody accounts
   #  set -o pipefail;
   ansible.builtin.shell:
-    printf "%s\n%s\n" "{{ item.password }}" "{{ item.password }}"
-    | prosodyctl adduser {{ item.username }}
+    cmd: |
+      set -o pipefail &&
+      printf "%s\n%s\n" "{{ item.password }}" "{{ item.password }}"
+      | prosodyctl adduser {{ item.username }}
+    executable: /bin/sh
   with_items: "{{ prosody_accounts }}"
   failed_when: false
   changed_when: false
