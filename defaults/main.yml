@@ -120,7 +120,7 @@ prosody_packages:
   - coturn
 
 # Specify the address of the TURN service (you may use the same domain as XMPP)
-prosody_turn_external_host: "{{ prosody_host }}"
+prosody_turn_external_host: "{{ prosody_vhost }}"
 # This secret must be set to the same value in both Prosody and the TURN server
 prosody_turn_external_secret: "your-secret-turn-access-token"
 
